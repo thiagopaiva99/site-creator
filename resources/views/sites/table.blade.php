@@ -30,6 +30,18 @@
                         <div class="btn-group">
                             <div class="dropdown">
                                 <button class="btn btn-xs btn-secondary dropdown-toggle" type="button" id="status" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Clonar Site
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="status">
+                                    @foreach( $sites as $miniSite )
+                                        @if ( $miniSite->id != $site->id )
+                                            <a class="dropdown-item" href="{{ url('/sites/'.$site->id.'/clone/'.$miniSite->id) }}">{{ $miniSite->name }}</a>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-xs btn-secondary dropdown-toggle" type="button" id="status" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Status
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="status">
@@ -66,19 +78,19 @@
                                 </div>
                             </div>
                             <div class="dropdown">
-                                <button class="btn btn-xs btn-secondary dropdown-toggle" type="button" id="downloads" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Downloads
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="downloads">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                </div>
-                            </div>
-                            <div class="dropdown">
                                 <button class="btn btn-xs btn-secondary dropdown-toggle" type="button" id="backups" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Backups
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="backups">
-                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="{{ url('/sites/'.$site->id.'/backup') }}">Backup do Site</a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-xs btn-secondary dropdown-toggle" type="button" id="downloads" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Downloads
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="downloads">
+                                    <a class="dropdown-item" href="{{ url('backups/'.strtolower($site->slug).'.zip') }}">Backup do Site</a>
                                 </div>
                             </div>
                             <div class="dropdown">
@@ -94,7 +106,8 @@
                                     Exclusoes
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="deletes">
-                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="{{ url('/sites/'.$site->id.'/delete') }}">Deletar Site</a>
+                                    <a class="dropdown-item" href="{{ url('/sites/'.$site->id.'/delete-backups') }}">Deletar Backups</a>
                                 </div>
                             </div>
                         </div>

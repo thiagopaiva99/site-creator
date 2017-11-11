@@ -26,6 +26,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('sites/{id}/stop', 'SiteController@stop');
     Route::get('sites/{id}/theme/{theme}', 'SiteController@theme');
     Route::get('sites/{id}/plugin/{plugin}', 'SiteController@plugin');
+    Route::get('sites/{id}/delete', 'SiteController@destroy');
+    Route::get('sites/{id}/backup', 'SiteController@backup');
+    Route::get('sites/{id}/clone/{clone}', 'SiteController@clonar');
 
     Route::get('/home', 'HomeController@index')->name('home');
 });

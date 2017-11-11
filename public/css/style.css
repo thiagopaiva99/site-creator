@@ -7984,3 +7984,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::after {
     .dropdown {
       margin-left: 5px;
     }
+
+    .dropdown-item {
+      font-size: 10px;
+    }

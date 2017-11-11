@@ -130,11 +130,54 @@ class SiteController extends Controller
             return redirect(route('sites.index'));
         }
 
+        $public_dir = public_path($site->slug);
+
+        if ( \File::isDirectory($public_dir) ) {
+            shell_exec("rm -rf $public_dir");
+        }
+
         $site->delete($id);
 
         flash('Site deletado!')->success();
 
         return redirect(route('sites.index'));
+    }
+
+    public function backup($id)
+    {
+        $site = Site::find($id);
+
+        $passowrd       = $this->password;
+        $filename       = $site->name.".zip";
+        $slug           = $site->slug;
+        $wordpress_path = public_path();
+        $backup_dir     = public_path('backups');
+
+        shell_exec("touch $slug.sql && chmod 777 $slug.sql");
+        shell_exec("mysqldump -u root -p$passowrd $slug > $slug.sql");
+        shell_exec("mv $slug.sql $slug");
+
+        shell_exec("cd $wordpress_path && zip -r $filename $slug");
+
+        shell_exec("mv $filename $backup_dir");
+
+        flash("Backup realizado com sucesso!")->success();
+
+        return redirect('sites');
+    }
+
+    public function clonar($id, $clone){
+        $site       = Site::find($id);
+        $cloneSite  = Site::find($clone);
+
+        $slug     = $site->slug;
+        $password = $this->password;
+
+        shell_exec("cp -r $cloneSite->slug $slug");
+        shell_exec("cd $slug && touch $slug.sql && chmod 777 $slug.sql");
+        shell_exec("mysqldump -u root -p$password $cloneSite->slug > $slug.sql");
+        shell_exec("mysql -u root -p$password -e \"create database $slug;\"");
+        shell_exec("mysql -u root -p$password $slug < $slug.sql");
     }
 
     public function phrases($slug, $dir, $wordpress_path) {
